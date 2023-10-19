@@ -1,5 +1,6 @@
 package dev.molkars.jsl.parser;
 
+import dev.molkars.jsl.bytecode.ByteCodeGenerator2;
 import dev.molkars.jsl.tokenizer.Token;
 
 import java.util.*;
@@ -53,4 +54,6 @@ public abstract class ParseElement {
         }
         return Objects.requireNonNull(end, "setToken must be called on leaf elements!");
     }
+
+    public abstract void compile(ByteCodeGenerator2 code);
 }

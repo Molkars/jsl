@@ -6,8 +6,10 @@ public class Tokenizer implements Lumber {
     public static Tokens tokenize(String source) {
         Tokenizer tokenizer = new Tokenizer(source);
         Tokens tokens = new Tokens();
+        tokenizer.consumeWhitespace();
         while (tokenizer.more()) {
             tokens.add(tokenizer.nextToken());
+            tokenizer.consumeWhitespace();
         }
         return tokens;
     }
@@ -48,6 +50,8 @@ public class Tokenizer implements Lumber {
         return switch (c) {
             case '(' -> makeToken(TokenType.LEFT_PAREN);
             case ')' -> makeToken(TokenType.RIGHT_PAREN);
+            case '{' -> makeToken(TokenType.LEFT_BRACE);
+            case '}' -> makeToken(TokenType.RIGHT_BRACE);
             case '"' -> makeString();
             default -> {
                 if (Character.isLetter(c) || c == '_') yield makeIdentifier();
@@ -116,14 +120,13 @@ public class Tokenizer implements Lumber {
             }
             advance();
         }
-        return new Token(TokenType.SYMBOL, source, start, index - start - 1, line, column);
+        return new Token(TokenType.SYMBOL, source, start, index - start, line, column);
     }
 
     // ---- snip ----
 
 
     public boolean more() {
-        consumeWhitespace();
         return index < source.length();
     }
 

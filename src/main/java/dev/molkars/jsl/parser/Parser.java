@@ -44,4 +44,17 @@ public class Parser {
     public boolean more() {
         return tokens.more();
     }
+
+    public Token expect(TokenType tokenType) {
+        if (!tokens.more()) {
+            throw new ParseException("Expected " + tokenType + " but found end of file");
+        }
+
+        Token token = tokens.next();
+        if (token.type() != tokenType) {
+            throw new ParseException("Expected " + tokenType + " but found " + token);
+        }
+
+        return token;
+    }
 }

@@ -1,8 +1,13 @@
 package dev.molkars.jsl;
 
+import dev.molkars.jsl.bytecode.TypeRef;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.IntFunction;
 
 public final class Essentials {
     private Essentials() {
@@ -12,6 +17,34 @@ public final class Essentials {
         return nicely(() -> Files.readString(Paths.get(path)), "Error reading file: " + path);
     }
 
+    public static Iterable<TypeRef> reverse(TypeRef[] consumes) {
+        return new Iterable<TypeRef>() {
+            @Override
+            public Iterator<TypeRef> iterator() {
+                return new Iterator<TypeRef>() {
+                    int index = consumes.length - 1;
+
+                    @Override
+                    public boolean hasNext() {
+                        return index >= 0;
+                    }
+
+                    @Override
+                    public TypeRef next() {
+                        return consumes[index--];
+                    }
+                };
+            };
+        };
+    }
+
+    public static <I, O> O[] arrayMap(I[] input, Function<I, O> mapper, IntFunction<O[]> collector) {
+        O[] output = collector.apply(input.length);
+        for (int i = 0; i < input.length; i++) {
+            output[i] = mapper.apply(input[i]);
+        }
+        return output;
+    }
 
     @FunctionalInterface
     public interface SafeRunnable<T> {
@@ -35,6 +68,13 @@ public final class Essentials {
 
     public static <T> T nicely(NiceRunnable<T> runnable) {
         return nicely(runnable, null);
+    }
+
+    public static void nicely(Runnable runnable) {
+        nicely(() -> {
+            runnable.run();
+            return null;
+        });
     }
 
     public static <T> T nicely(NiceRunnable<T> runnable, String message) {

@@ -14,6 +14,7 @@ public class Main {
         var ast = parseProgram(content);
         var program = compileProgram(ast);
         runProgram(program);
+
         var output = program.getOutput();
         System.out.println(output);
     }

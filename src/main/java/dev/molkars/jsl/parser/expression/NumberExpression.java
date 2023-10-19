@@ -5,9 +5,11 @@ import dev.molkars.jsl.parser.Parser;
 import dev.molkars.jsl.tokenizer.Token;
 import dev.molkars.jsl.tokenizer.TokenType;
 
+import java.math.BigDecimal;
+
 public class NumberExpression extends Expression {
     final Token number;
-    Double value;
+    BigDecimal value;
 
     public NumberExpression(Token token) {
         super(token);
@@ -24,12 +26,14 @@ public class NumberExpression extends Expression {
 
     @Override
     public void compile(ByteCodeGenerator2 code) {
-        code.addPushConstantInstruction(getValue());
-        code.addCallInstruction(Double.class, "valueOf", Double.class, double.class);
+        code.addNewInstruction(BigDecimal.class);
+        code.addDuplicateInstruction();
+        code.addPushConstantInstruction(number.lex());
+        code.addConstructorCallInstruction(BigDecimal.class, String.class);
     }
 
-    public double getValue() {
-        if (value == null) value = Double.parseDouble(number.lex());
+    public BigDecimal getValue() {
+        if (value == null) value = new BigDecimal(number.lex());
         return value;
     }
 }

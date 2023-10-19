@@ -29,6 +29,12 @@ public class StringExpression extends Expression {
     public String getValue() {
         if (value == null) {
             value = token.lex();
+            StringBuilder builder = new StringBuilder(value.length() - 2);
+            for (int i = 1; i < value.length() - 1; i++) {
+                int c = value.charAt(i);
+                builder.append((char) c);
+            }
+            value = builder.toString();
         }
         return value;
     }

@@ -4,7 +4,7 @@ import dev.molkars.jsl.parser.ParseElement;
 import dev.molkars.jsl.parser.Parser;
 import dev.molkars.jsl.tokenizer.Token;
 
-public abstract class Expression extends ParseElement  {
+public abstract class Expression extends ParseElement {
     protected Expression() {
         super();
     }

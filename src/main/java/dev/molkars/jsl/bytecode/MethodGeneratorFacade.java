@@ -8,6 +8,7 @@ public interface MethodGeneratorFacade {
     void addPushConstantInstruction(int value);
 
     void addPushConstantInstruction(float value);
+
     void addPushConstantInstruction(double value);
 
     void addPushConstantInstruction(boolean value);

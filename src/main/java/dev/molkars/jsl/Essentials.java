@@ -34,7 +34,9 @@ public final class Essentials {
                         return consumes[index--];
                     }
                 };
-            };
+            }
+
+            ;
         };
     }
 
@@ -46,11 +48,6 @@ public final class Essentials {
         return output;
     }
 
-    @FunctionalInterface
-    public interface SafeRunnable<T> {
-        T run() throws Throwable;
-    }
-
     public static <T> Optional<T> safely(SafeRunnable<T> runnable) {
         try {
             return Optional.of(runnable.run());
@@ -59,11 +56,6 @@ public final class Essentials {
                     .error(throwable, "Error: " + throwable.getMessage());
             return Optional.empty();
         }
-    }
-
-    @FunctionalInterface
-    public interface NiceRunnable<T> {
-        T run() throws Throwable;
     }
 
     public static <T> T nicely(NiceRunnable<T> runnable) {
@@ -105,5 +97,15 @@ public final class Essentials {
             }
         }
         return builder.toString();
+    }
+
+    @FunctionalInterface
+    public interface SafeRunnable<T> {
+        T run() throws Throwable;
+    }
+
+    @FunctionalInterface
+    public interface NiceRunnable<T> {
+        T run() throws Throwable;
     }
 }

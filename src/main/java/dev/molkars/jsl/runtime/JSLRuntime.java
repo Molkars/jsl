@@ -2,6 +2,12 @@ package dev.molkars.jsl.runtime;
 
 public class JSLRuntime {
     private static JSLRuntime INSTANCE;
+    final JSLProgram program;
+    final TypedStore store = new TypedStore();
+
+    public JSLRuntime(JSLProgram program) {
+        this.program = program;
+    }
 
     public static JSLRuntime getInstance() {
         if (INSTANCE == null) {
@@ -16,13 +22,6 @@ public class JSLRuntime {
         }
         INSTANCE = new JSLRuntime(program);
     }
-
-    public JSLRuntime(JSLProgram program) {
-        this.program = program;
-    }
-
-    final JSLProgram program;
-    final TypedStore store = new TypedStore();
 
     public void print(Object value) {
         program.print(value);

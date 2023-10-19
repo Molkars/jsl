@@ -17,6 +17,7 @@ public class InstructionBuilder {
     final HashMap<Label, LinkedList<LabelStack>> labelStacks = new HashMap<>();
     Stack<TypeRef> typeStack = new Stack<>();
     Label label = null;
+
     public InstructionBuilder(BytecodeContext context) {
         this.context = context;
     }

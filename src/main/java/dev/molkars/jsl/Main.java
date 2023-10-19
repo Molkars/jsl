@@ -1,10 +1,5 @@
 package dev.molkars.jsl;
 
-import dev.molkars.jsl.bytecode.ByteCodeGenerator2;
-import dev.molkars.jsl.bytecode.TypeRef;
-import dev.molkars.jsl.runtime.JSLProgram;
-
-import static dev.molkars.jsl.Essentials.nicely;
 import static dev.molkars.jsl.Essentials.readToString;
 import static dev.molkars.jsl.parser.Program.*;
 

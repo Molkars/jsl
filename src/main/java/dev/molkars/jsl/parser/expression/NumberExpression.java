@@ -14,6 +14,14 @@ public class NumberExpression extends Expression {
         this.number = token;
     }
 
+    public static NumberExpression parse(Parser parser) {
+        if (!parser.peek(TokenType.NUMBER)) {
+            return null;
+        }
+        Token token = parser.take();
+        return new NumberExpression(token);
+    }
+
     @Override
     public void compile(ByteCodeGenerator2 code) {
         code.addPushConstantInstruction(getValue());
@@ -23,13 +31,5 @@ public class NumberExpression extends Expression {
     public double getValue() {
         if (value == null) value = Double.parseDouble(number.lex());
         return value;
-    }
-
-    public static NumberExpression parse(Parser parser) {
-        if (!parser.peek(TokenType.NUMBER)) {
-            return null;
-        }
-        Token token = parser.take();
-        return new NumberExpression(token);
     }
 }

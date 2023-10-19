@@ -25,6 +25,6 @@ public interface IClassGeneratorDelegate extends IClassGenerator {
 
     @Override
     default HashMap<String, TypeRef> getFields() {
-       return getClassGenerator().getFields();
+        return getClassGenerator().getFields();
     }
 }

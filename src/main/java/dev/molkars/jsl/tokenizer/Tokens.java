@@ -8,7 +8,8 @@ import java.util.Iterator;
 public class Tokens implements CollectionMixin<Token> {
     private final ArrayList<Token> tokens = new ArrayList<>();
 
-    public Tokens() {}
+    public Tokens() {
+    }
 
     @Override
     public int size() {

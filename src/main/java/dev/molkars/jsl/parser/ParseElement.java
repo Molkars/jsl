@@ -14,11 +14,6 @@ public abstract class ParseElement {
         this(null, null, children);
     }
 
-    protected <T extends ParseElement> T addChild(T child) {
-        children.add(child);
-        return child;
-    }
-
     protected ParseElement(Token start, Token end, Collection<ParseElement> children) {
         this.start = start;
         this.end = end;
@@ -35,6 +30,11 @@ public abstract class ParseElement {
     protected ParseElement(Token start, Token end) {
         this.start = start;
         this.end = end;
+    }
+
+    protected <T extends ParseElement> T addChild(T child) {
+        children.add(child);
+        return child;
     }
 
     public Collection<ParseElement> getChildren() {

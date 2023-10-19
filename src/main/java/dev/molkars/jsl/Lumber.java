@@ -20,6 +20,18 @@ public interface Lumber {
         };
     }
 
+    default void log(String message) {
+        Impl.impl.log(getClass(), message);
+    }
+
+    default void error(Throwable throwable, String message) {
+        Impl.impl.error(getClass(), throwable, message);
+    }
+
+    default void error(String message) {
+        Impl.impl.error(getClass(), message);
+    }
+
     class Impl {
         private static final Impl impl = new Impl();
 
@@ -41,17 +53,5 @@ public interface Lumber {
             new Exception().printStackTrace();
             System.exit(1);
         }
-    }
-
-    default void log(String message) {
-        Impl.impl.log(getClass(), message);
-    }
-
-    default void error(Throwable throwable, String message) {
-        Impl.impl.error(getClass(), throwable, message);
-    }
-
-    default void error(String message) {
-        Impl.impl.error(getClass(), message);
     }
 }

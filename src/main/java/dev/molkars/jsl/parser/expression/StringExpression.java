@@ -14,6 +14,13 @@ public class StringExpression extends Expression {
         this.token = token;
     }
 
+    public static StringExpression parse(Parser parser) {
+        if (!parser.peek(TokenType.STRING)) {
+            return null;
+        }
+        return new StringExpression(parser.take());
+    }
+
     @Override
     public void compile(ByteCodeGenerator2 code) {
         code.addPushConstantInstruction(getValue());
@@ -24,12 +31,5 @@ public class StringExpression extends Expression {
             value = token.lex();
         }
         return value;
-    }
-
-    public static StringExpression parse(Parser parser) {
-        if (!parser.peek(TokenType.STRING)) {
-            return null;
-        }
-        return new StringExpression(parser.take());
     }
 }

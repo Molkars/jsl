@@ -3,6 +3,15 @@ package dev.molkars.jsl.tokenizer;
 import dev.molkars.jsl.Lumber;
 
 public class Tokenizer implements Lumber {
+    private final String source;
+    int line, column, index;
+    public Tokenizer(String source) {
+        this.source = source;
+        this.line = 1;
+        this.column = 1;
+        this.index = 0;
+    }
+
     public static Tokens tokenize(String source) {
         Tokenizer tokenizer = new Tokenizer(source);
         Tokens tokens = new Tokens();
@@ -12,16 +21,6 @@ public class Tokenizer implements Lumber {
             tokenizer.consumeWhitespace();
         }
         return tokens;
-    }
-
-    private final String source;
-    int line, column, index;
-
-    public Tokenizer(String source) {
-        this.source = source;
-        this.line = 1;
-        this.column = 1;
-        this.index = 0;
     }
 
     public boolean consumeWhitespace() {

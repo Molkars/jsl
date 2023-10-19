@@ -3,7 +3,6 @@ package dev.molkars.jsl.parser.statement;
 import dev.molkars.jsl.bytecode.ByteCodeGenerator2;
 import dev.molkars.jsl.parser.Parser;
 import dev.molkars.jsl.parser.expression.Expression;
-import dev.molkars.jsl.runtime.JSLProgram;
 import dev.molkars.jsl.runtime.JSLRuntime;
 import dev.molkars.jsl.tokenizer.Token;
 

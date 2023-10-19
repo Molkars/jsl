@@ -19,6 +19,35 @@ public class Program extends ParseElement {
         super(children);
     }
 
+    public static Program parseProgram(String src) {
+        return parseProgram(tokenize(src));
+    }
+
+    public static JSLProgram compileProgram(Program program) {
+        ByteCodeGenerator2 code = new ByteCodeGenerator2();
+        program.compile(code);
+        code.close();
+
+        return nicely(() ->
+                code.compile((TypeRef.Generated) code.getType("dev/molkars/jsl", "$$JSLProgram")));
+    }
+
+    public static void runProgram(JSLProgram program) {
+        JSLRuntime.initialize(program);
+        nicely(program::execute);
+    }
+
+    public static Program parseProgram(Tokens tokens) {
+        Parser parser = new Parser(new TokenView(tokens));
+
+        LinkedList<ParseElement> children = new LinkedList<>();
+        while (parser.more()) {
+            children.add(parser.require(Program.class, Statement::parse));
+        }
+
+        return new Program(children);
+    }
+
     @Override
     public void compile(ByteCodeGenerator2 code) {
         code.addClass("dev/molkars/jsl", "$$JSLProgram", Object.class, JSLProgram.class);
@@ -64,34 +93,5 @@ public class Program extends ParseElement {
         code.closeMethod();
 
         code.closeClass();
-    }
-
-    public static Program parseProgram(String src) {
-        return parseProgram(tokenize(src));
-    }
-
-    public static JSLProgram compileProgram(Program program) {
-        ByteCodeGenerator2 code = new ByteCodeGenerator2();
-        program.compile(code);
-        code.close();
-
-        return nicely(() ->
-                code.compile((TypeRef.Generated) code.getType("dev/molkars/jsl", "$$JSLProgram")));
-    }
-
-    public static void runProgram(JSLProgram program) {
-        JSLRuntime.initialize(program);
-        nicely(program::execute);
-    }
-
-    public static Program parseProgram(Tokens tokens) {
-        Parser parser = new Parser(new TokenView(tokens));
-
-        LinkedList<ParseElement> children = new LinkedList<>();
-        while (parser.more()) {
-            children.add(parser.require(Program.class, Statement::parse));
-        }
-
-        return new Program(children);
     }
 }

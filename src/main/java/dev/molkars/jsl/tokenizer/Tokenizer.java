@@ -2,6 +2,8 @@ package dev.molkars.jsl.tokenizer;
 
 import dev.molkars.jsl.Lumber;
 
+import static dev.molkars.jsl.Essentials.debug;
+
 public class Tokenizer implements Lumber {
     private final String source;
     int line, column, index;
@@ -15,12 +17,24 @@ public class Tokenizer implements Lumber {
     public static Tokens tokenize(String source) {
         Tokenizer tokenizer = new Tokenizer(source);
         Tokens tokens = new Tokens();
-        tokenizer.consumeWhitespace();
+        tokenizer.consumeGarbage();
         while (tokenizer.more()) {
             tokens.add(tokenizer.nextToken());
-            tokenizer.consumeWhitespace();
+            tokenizer.consumeGarbage();
         }
         return tokens;
+    }
+
+    public boolean consumeGarbage() {
+        int start = this.index;
+        consumeWhitespace();
+        while (take("//")) {
+            while (more() && !take('\n')) {
+                advance();
+            }
+            consumeWhitespace();
+        }
+        return start != this.index;
     }
 
     public boolean consumeWhitespace() {
@@ -56,10 +70,10 @@ public class Tokenizer implements Lumber {
             case '/' -> makeToken(TokenType.SLASH);
             case '%' -> makeToken(TokenType.PERCENT);
             case '~' -> {
-                if (doTake('/')) {
+                if (peek('/', 1)) {
                     yield makeToken(TokenType.TILDE_SLASH);
                 }
-                if (doTake('%')) {
+                if (peek('%', 1)) {
                     yield makeToken(TokenType.TILDE_PERCENT);
                 }
                 throw new IllegalStateException("Unexpected character " + c);
@@ -71,7 +85,7 @@ public class Tokenizer implements Lumber {
             default -> {
                 if (Character.isLetter(c) || c == '_') yield makeIdentifier();
                 if (Character.isDigit(c)) yield makeNumber();
-                throw new IllegalStateException("Unexpected character " + c);
+                throw new IllegalStateException("Unexpected character " + debug(c));
             }
         };
     }
@@ -112,7 +126,7 @@ public class Tokenizer implements Lumber {
             column++;
         }
 
-        if (doTake('.')) {
+        if (take('.')) {
             while (more()) {
                 char c = source.charAt(index);
                 if (!Character.isDigit(c) && c != '_') {
@@ -150,9 +164,28 @@ public class Tokenizer implements Lumber {
         column++;
     }
 
-    public boolean doTake(char c) {
+    public boolean take(char c) {
         if (more() && source.charAt(index) == c) {
             advance();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean take(String s) {
+        if (more() && source.startsWith(s, index)) {
+            index += s.length();
+            column += s.length();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean take(String s, int off) {
+        int index = this.index + off;
+        if (index + s.length() < source.length() && source.startsWith(s, index)) {
+            this.index = index + s.length();
+            this.column += off + s.length();
             return true;
         }
         return false;
@@ -162,6 +195,27 @@ public class Tokenizer implements Lumber {
         return more() && source.charAt(index) == c;
     }
 
+    public boolean peek(String s) {
+        return index + s.length() < source.length() && source.startsWith(s, index);
+    }
+
+    public boolean peek(String s, int off) {
+        int index = this.index + off;
+        return index + s.length() < source.length() && source.startsWith(s, index);
+    }
+
+    public boolean peek(char c, int off) {
+        int index = this.index + off;
+        return index < source.length() && index > 0 && source.charAt(index) == c;
+    }
+
+    public char peek() {
+        if (!more()) {
+            throw new IllegalStateException("No more characters");
+        }
+        return source.charAt(index);
+    }
+
     public char take() {
         if (!more()) {
             throw new IllegalStateException("No more characters");
@@ -169,5 +223,15 @@ public class Tokenizer implements Lumber {
         char c = source.charAt(index);
         advance();
         return c;
+    }
+
+    public boolean take(char c, int off) {
+        int index = this.index + off;
+        if (index < source.length() && index > 0 && source.charAt(index) == c) {
+            this.index = index;
+            this.column += off;
+            return true;
+        }
+        return false;
     }
 }

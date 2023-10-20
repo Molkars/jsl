@@ -5,6 +5,7 @@ import dev.molkars.jsl.parser.Parser;
 import dev.molkars.jsl.tokenizer.TokenType;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.TreeMap;
 
 public class FactorExpression extends Expression {
@@ -28,8 +29,11 @@ public class FactorExpression extends Expression {
 
     @Override
     public void compile(ByteCodeGenerator2 code) {
-        left.compile(code);
-        right.compile(code);
+        if (operator != Op.INT_MODULO) {
+            left.compile(code);
+            right.compile(code);
+        }
+
         if (operator == Op.TIMES) {
             code.addCallInstruction(BigDecimal.class, "multiply", BigDecimal.class, BigDecimal.class);
         } else if (operator == Op.DIVIDE) {
@@ -39,8 +43,13 @@ public class FactorExpression extends Expression {
         } else if (operator == Op.INT_DIVIDE) {
             code.addCallInstruction(BigDecimal.class, "divideToIntegralValue", BigDecimal.class, BigDecimal.class);
         } else if (operator == Op.INT_MODULO) {
+            code.addNewInstruction(BigDecimal.class);
+            code.addDuplicateInstruction();
+            left.compile(code);
+            right.compile(code);
             code.addCallInstruction(BigDecimal.class, "remainder", BigDecimal.class, BigDecimal.class);
-            code.addCallInstruction(BigDecimal.class, "toBigInteger", BigDecimal.class);
+            code.addCallInstruction(BigDecimal.class, "toBigInteger", BigInteger.class);
+            code.addConstructorCallInstruction(BigDecimal.class, BigInteger.class);
         } else {
             throw new RuntimeException("Unknown operator: " + operator);
         }

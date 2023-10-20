@@ -45,6 +45,8 @@ public class TermExpression extends Expression {
     }
 
     public static Expression parse(Parser parser) {
-        return parser.separated(TermExpression.class, FactorExpression::parse, OPERATORS).fold((left, right, op) -> new TermExpression(left, right, OPS.get(op.type())));
+        return parser
+                .separated(TermExpression.class, FactorExpression::parse, OPERATORS)
+                .fold((left, right, op) -> new TermExpression(left, right, OPS.get(op.type())));
     }
 }

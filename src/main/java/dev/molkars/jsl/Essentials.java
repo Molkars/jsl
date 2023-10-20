@@ -99,6 +99,10 @@ public final class Essentials {
         return builder.toString();
     }
 
+    public static String debug(char c) {
+        return debug(String.valueOf(c));
+    }
+
     @FunctionalInterface
     public interface SafeRunnable<T> {
         T run() throws Throwable;

@@ -70,7 +70,7 @@ public class Parser {
             return null;
         }
         LinkedList<Pair<T, Token>> elements = new LinkedList<>();
-        while (true) {
+        while (element != null) {
             Token separator = null;
             for (TokenType tokenType : separators) {
                 if (peek(tokenType)) {

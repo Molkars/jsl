@@ -18,6 +18,10 @@ public abstract class Expression extends ParseElement {
     }
 
     public static Expression parse(Parser parser) {
+        return TermExpression.parse(parser);
+    }
+
+    public static Expression primary(Parser parser) {
         Expression out;
 
         if ((out = NumberExpression.parse(parser)) != null) {

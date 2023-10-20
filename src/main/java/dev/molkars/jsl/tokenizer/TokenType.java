@@ -7,6 +7,15 @@ public enum TokenType {
     LEFT_BRACE("{"),
     RIGHT_BRACE("}"),
 
+    STAR("*"),
+    SLASH("/"),
+    PERCENT("%"),
+    TILDE_SLASH("~/"),
+    TILDE_PERCENT("~%"),
+    PLUS("+"),
+    DASH("-"),
+
+
     STRING(null),
     SYMBOL(null),
     NUMBER(null);

@@ -26,9 +26,14 @@ public class PrintStatement extends Statement {
 
     @Override
     public void compile(ByteCodeGenerator2 code) {
-//        JSLRuntime.getInstance().print(value);
+        // JSLRuntime.getInstance().print(value + "\n");
         code.addCallInstruction(JSLRuntime.class, "getInstance", JSLRuntime.class);
+
         value.compile(code);
+        code.addCallInstruction(String.class, "valueOf", String.class, Object.class);
+        code.addPushConstantInstruction("\n");
+        code.addCallInstruction(String.class, "concat", String.class, String.class);
+
         code.addCallInstruction(JSLRuntime.class, "print", void.class, Object.class);
     }
 }

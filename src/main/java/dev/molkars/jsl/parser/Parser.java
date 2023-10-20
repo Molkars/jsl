@@ -1,9 +1,11 @@
 package dev.molkars.jsl.parser;
 
+import dev.molkars.jsl.essentials.Pair;
 import dev.molkars.jsl.tokenizer.Token;
 import dev.molkars.jsl.tokenizer.TokenType;
 import dev.molkars.jsl.tokenizer.TokenView;
 
+import java.util.LinkedList;
 import java.util.function.Function;
 
 public class Parser {
@@ -56,5 +58,34 @@ public class Parser {
         }
 
         return token;
+    }
+
+    public <T extends ParseElement> Separated<T> separated(
+            Class<? extends ParseElement> parent,
+            Function<Parser, T> parser,
+            TokenType... separators
+    ) {
+        T element = parser.apply(this);
+        if (element == null) {
+            return null;
+        }
+        LinkedList<Pair<T, Token>> elements = new LinkedList<>();
+        while (true) {
+            Token separator = null;
+            for (TokenType tokenType : separators) {
+                if (peek(tokenType)) {
+                    separator = expect(tokenType);
+                    break;
+                }
+            }
+            if (separator == null) {
+                break;
+            }
+
+            elements.add(Pair.of(element, separator));
+            element = require(parent, parser);
+        }
+
+        return new Separated<>(elements, element);
     }
 }

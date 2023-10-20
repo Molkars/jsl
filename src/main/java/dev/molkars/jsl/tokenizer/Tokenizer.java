@@ -51,6 +51,22 @@ public class Tokenizer implements Lumber {
             case ')' -> makeToken(TokenType.RIGHT_PAREN);
             case '{' -> makeToken(TokenType.LEFT_BRACE);
             case '}' -> makeToken(TokenType.RIGHT_BRACE);
+
+            case '*' -> makeToken(TokenType.STAR);
+            case '/' -> makeToken(TokenType.SLASH);
+            case '%' -> makeToken(TokenType.PERCENT);
+            case '~' -> {
+                if (doTake('/')) {
+                    yield makeToken(TokenType.TILDE_SLASH);
+                }
+                if (doTake('%')) {
+                    yield makeToken(TokenType.TILDE_PERCENT);
+                }
+                throw new IllegalStateException("Unexpected character " + c);
+            }
+            case '+' -> makeToken(TokenType.PLUS);
+            case '-' -> makeToken(TokenType.DASH);
+
             case '"' -> makeString();
             default -> {
                 if (Character.isLetter(c) || c == '_') yield makeIdentifier();

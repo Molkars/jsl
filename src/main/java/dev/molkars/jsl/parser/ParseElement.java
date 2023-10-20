@@ -37,6 +37,11 @@ public abstract class ParseElement {
         return child;
     }
 
+    protected <C extends Collection<A>, A extends ParseElement> C addChildren(C children) {
+        this.children.addAll(children);
+        return children;
+    }
+
     public Collection<ParseElement> getChildren() {
         return Collections.unmodifiableCollection(children);
     }
@@ -54,6 +59,4 @@ public abstract class ParseElement {
         }
         return Objects.requireNonNull(end, "setToken must be called on leaf elements!");
     }
-
-    public abstract void compile(ByteCodeGenerator2 code);
 }

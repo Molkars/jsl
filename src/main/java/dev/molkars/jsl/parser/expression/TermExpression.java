@@ -17,8 +17,8 @@ public class TermExpression extends Expression {
     final Op operator;
 
     public TermExpression(Expression left, Expression right, Op operator) {
-        this.left = left;
-        this.right = right;
+        this.left = addChild(left);
+        this.right = addChild(right);
         this.operator = operator;
     }
 

@@ -15,6 +15,7 @@ public enum TokenType {
     PLUS("+"),
     DASH("-"),
 
+    COMMA(","),
 
     STRING(null),
     SYMBOL(null),

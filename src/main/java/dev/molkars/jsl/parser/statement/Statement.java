@@ -1,10 +1,11 @@
 package dev.molkars.jsl.parser.statement;
 
+import dev.molkars.jsl.parser.CompileElement;
 import dev.molkars.jsl.parser.ParseElement;
 import dev.molkars.jsl.parser.Parser;
 import dev.molkars.jsl.tokenizer.Token;
 
-public abstract class Statement extends ParseElement {
+public abstract class Statement extends ParseElement implements CompileElement {
     protected Statement() {
         super();
     }

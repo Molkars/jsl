@@ -81,6 +81,8 @@ public class Tokenizer implements Lumber {
             case '+' -> makeToken(TokenType.PLUS);
             case '-' -> makeToken(TokenType.DASH);
 
+            case ',' -> makeToken(TokenType.COMMA);
+
             case '"' -> makeString();
             default -> {
                 if (Character.isLetter(c) || c == '_') yield makeIdentifier();

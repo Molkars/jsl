@@ -8,3 +8,7 @@ print "Hi"
 // print 4.2 ~/ 2
 // print 4.4 ~% 3
 
+object Point {
+  int x,
+  int y,
+}

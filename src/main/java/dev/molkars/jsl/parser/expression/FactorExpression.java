@@ -22,8 +22,8 @@ public class FactorExpression extends Expression {
     final Op operator;
 
     public FactorExpression(Expression left, Expression right, Op operator) {
-        this.left = left;
-        this.right = right;
+        this.left = addChild(left);
+        this.right = addChild(right);
         this.operator = operator;
     }
 

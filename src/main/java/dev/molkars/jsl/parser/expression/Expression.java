@@ -1,10 +1,11 @@
 package dev.molkars.jsl.parser.expression;
 
+import dev.molkars.jsl.parser.CompileElement;
 import dev.molkars.jsl.parser.ParseElement;
 import dev.molkars.jsl.parser.Parser;
 import dev.molkars.jsl.tokenizer.Token;
 
-public abstract class Expression extends ParseElement {
+public abstract class Expression extends ParseElement implements CompileElement {
     protected Expression() {
         super();
     }

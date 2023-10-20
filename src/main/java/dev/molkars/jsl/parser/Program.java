@@ -2,6 +2,7 @@ package dev.molkars.jsl.parser;
 
 import dev.molkars.jsl.bytecode.ByteCodeGenerator2;
 import dev.molkars.jsl.bytecode.TypeRef;
+import dev.molkars.jsl.parser.declaration.Declaration;
 import dev.molkars.jsl.parser.statement.Statement;
 import dev.molkars.jsl.runtime.JSLProgram;
 import dev.molkars.jsl.runtime.JSLRuntime;
@@ -14,7 +15,7 @@ import java.util.List;
 import static dev.molkars.jsl.Essentials.nicely;
 import static dev.molkars.jsl.tokenizer.Tokenizer.tokenize;
 
-public class Program extends ParseElement {
+public class Program extends ParseElement implements CompileElement {
     public Program(List<ParseElement> children) {
         super(children);
     }
@@ -42,7 +43,7 @@ public class Program extends ParseElement {
 
         LinkedList<ParseElement> children = new LinkedList<>();
         while (parser.more()) {
-            children.add(parser.require(Program.class, Statement::parse));
+            children.add(parser.require(Program.class, Declaration::parse));
         }
 
         return new Program(children);
@@ -68,7 +69,9 @@ public class Program extends ParseElement {
 
         code.addMethod("execute", void.class);
         for (var child : getChildren()) {
-            child.compile(code);
+            if (child instanceof CompileElement element) {
+                element.compile(code);
+            }
         }
         if (!code.hasReturned())
             code.addReturnInstruction();

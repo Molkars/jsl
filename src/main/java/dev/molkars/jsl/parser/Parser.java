@@ -27,6 +27,10 @@ public class Parser {
         return tokens.next();
     }
 
+    public boolean take(TokenType tokenType) {
+        return tokens.more() && tokens.peek().type() == tokenType && tokens.next() != null;
+    }
+
     public <T extends ParseElement> T require(Class<? extends ParseElement> parent, Function<Parser, T> parser) {
         T element = parser.apply(this);
         if (element == null) {

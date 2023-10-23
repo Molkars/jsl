@@ -82,6 +82,7 @@ public class Tokenizer implements Lumber {
             case '-' -> makeToken(TokenType.DASH);
 
             case ',' -> makeToken(TokenType.COMMA);
+            case '=' -> makeToken(TokenType.EQUAL);
 
             case '"' -> makeString();
             default -> {
@@ -208,7 +209,7 @@ public class Tokenizer implements Lumber {
 
     public boolean peek(char c, int off) {
         int index = this.index + off;
-        return index < source.length() && index > 0 && source.charAt(index) == c;
+        return index < source.length() && index >= 0 && source.charAt(index) == c;
     }
 
     public char peek() {
@@ -229,7 +230,7 @@ public class Tokenizer implements Lumber {
 
     public boolean take(char c, int off) {
         int index = this.index + off;
-        if (index < source.length() && index > 0 && source.charAt(index) == c) {
+        if (index < source.length() && index >= 0 && source.charAt(index) == c) {
             this.index = index;
             this.column += off;
             return true;

@@ -16,6 +16,7 @@ public enum TokenType {
     DASH("-"),
 
     COMMA(","),
+    EQUAL("="),
 
     STRING(null),
     SYMBOL(null),

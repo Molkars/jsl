@@ -14,7 +14,7 @@ public class Separated<E> {
 
     public Separated(LinkedList<Pair<E, Token>> items, E last) {
         this.items = items;
-        this.last = Objects.requireNonNull(last);
+        this.last = last;
     }
 
     public E fold(TriFunction<E, E, Token, E> func) {

@@ -1,5 +1,7 @@
 package dev.molkars.jsl.parser.typeexpression;
 
+import dev.molkars.jsl.bytecode.ByteCodeGenerator2;
+import dev.molkars.jsl.bytecode.TypeRef;
 import dev.molkars.jsl.parser.ParseElement;
 import dev.molkars.jsl.parser.Parser;
 import dev.molkars.jsl.tokenizer.Token;
@@ -27,4 +29,6 @@ public abstract class TypeExpression extends ParseElement {
 
         return null;
     }
+
+    public abstract TypeRef resolve(ByteCodeGenerator2 code);
 }

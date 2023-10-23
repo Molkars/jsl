@@ -1,5 +1,6 @@
 package dev.molkars.jsl.bytecode.instruction;
 
+import dev.molkars.jsl.Essentials;
 import dev.molkars.jsl.bytecode.BytecodeContext;
 import dev.molkars.jsl.bytecode.Instruction;
 import dev.molkars.jsl.bytecode.TypeRef;
@@ -46,6 +47,6 @@ public class PushConstantInstruction implements Instruction {
 
     @Override
     public void display(StringBuffer b) {
-        b.append("PUSH ").append(value instanceof String ? "\"" + value + "\"" : value);
+        b.append("PUSH ").append(Essentials.debug(value));
     }
 }

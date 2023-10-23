@@ -136,6 +136,10 @@ public class InstructionBuilder {
         return !instructions.isEmpty() && instructions.getLast().isTerminal();
     }
 
+    public TypeRef getStackElement(int i) {
+        return typeStack.get(typeStack.size() - i - 1);
+    }
+
     record LabelStack(Label label, TypeRef[] stack) {
     }
 }

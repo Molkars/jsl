@@ -286,4 +286,7 @@ public interface MethodGeneratorDelegate extends MethodGeneratorFacade {
         return getMethodGenerator().hasSlot(name);
     }
 
+    default TypeRef getStackElement(int i) {
+        return getMethodGenerator().getStackElement(i);
+    }
 }

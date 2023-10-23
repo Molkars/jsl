@@ -31,4 +31,9 @@ public class TokenView implements Iterator<Token> {
     public boolean more() {
         return hasNext();
     }
+
+    public boolean more(int i) {
+        int idx = index + i;
+        return idx >= 0 && idx < tokens.size();
+    }
 }

@@ -33,6 +33,10 @@ public abstract class Expression extends ParseElement implements CompileElement 
             return out;
         }
 
+        if ((out = ConstructorExpression.parse(parser)) != null) {
+            return out;
+        }
+
         return out;
     }
 }

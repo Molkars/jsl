@@ -103,6 +103,15 @@ public final class Essentials {
         return debug(String.valueOf(c));
     }
 
+    public static String debug(Object value) {
+        return switch (value) {
+            case String s -> debug(s);
+            case Character c -> debug((char) c);
+            case null -> "<null>";
+            default -> value.toString();
+        };
+    }
+
     @FunctionalInterface
     public interface SafeRunnable<T> {
         T run() throws Throwable;

@@ -419,6 +419,11 @@ public class MethodGenerator2 implements MethodGeneratorFacade, Display {
     }
 
     @Override
+    public TypeRef getStackElement(int i) {
+        return builder.getStackElement(i);
+    }
+
+    @Override
     public void display(StringBuffer b) {
         b.append("method ");
         b.append(methodName);

@@ -51,6 +51,10 @@ public class Parser {
         return tokens.more();
     }
 
+    public boolean more(int i) {
+        return tokens.more(i);
+    }
+
     public Token expect(TokenType tokenType) {
         if (!tokens.more()) {
             throw new ParseException("Expected " + tokenType + " but found end of file");
@@ -71,7 +75,7 @@ public class Parser {
     ) {
         T element = parser.apply(this);
         if (element == null) {
-            return null;
+            return new Separated<>(new LinkedList<>(), null);
         }
         LinkedList<Pair<T, Token>> elements = new LinkedList<>();
         while (element != null) {
@@ -91,5 +95,10 @@ public class Parser {
         }
 
         return new Separated<>(elements, element);
+    }
+
+    public boolean peek(int i, TokenType tokenType) {
+        if (!more(i)) return false;
+        return tokens.peek(i).type() == tokenType;
     }
 }

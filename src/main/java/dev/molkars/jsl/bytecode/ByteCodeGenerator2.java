@@ -3,6 +3,8 @@ package dev.molkars.jsl.bytecode;
 import dev.molkars.jsl.Essentials;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -10,7 +12,7 @@ import java.util.stream.Collectors;
 public class ByteCodeGenerator2 implements MethodGeneratorDelegate, IClassGeneratorDelegate, Display {
     final BytecodeContext context = new BytecodeContext();
     Stack<ClassGenerator> classStack = new Stack<>();
-    LinkedList<ClassGenerator> classes = new LinkedList<>();
+    LinkedHashSet<ClassGenerator> classes = new LinkedHashSet<>();
 
     public ByteCodeGenerator2() {
     }
@@ -137,6 +139,38 @@ public class ByteCodeGenerator2 implements MethodGeneratorDelegate, IClassGenera
                 return type;
         }
         return null;
+    }
+
+    public TypeRef getType(Class<?> clazz) {
+        return context.getTypeFor(clazz);
+    }
+
+    public TypeRef getType(String lex) {
+        for (var clazz : classes) {
+            if (clazz.getType().getTypeName().equals(lex))
+                return clazz.getType();
+        }
+        for (var clazz : classStack) {
+            if (clazz.getType().getTypeName().equals(lex))
+                return clazz.getType();
+        }
+        throw new IllegalArgumentException("unknown type: " + lex);
+    }
+
+    public void focusClass(TypeRef.Generated generated) {
+        for (var clazz : classes) {
+            if (clazz.getType().equals(generated)) {
+                classStack.push(clazz);
+                return;
+            }
+        }
+        for (var clazz : classStack) {
+            if (clazz.getType().equals(generated)) {
+                classStack.push(clazz);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("unknown type: " + generated);
     }
 
     private static class DynamicClassLoader extends ClassLoader {

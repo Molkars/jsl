@@ -120,4 +120,5 @@ public interface MethodGeneratorFacade {
 
     boolean hasSlot(String name);
 
+    TypeRef getStackElement(int i);
 }
